@@ -1,10 +1,21 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BooleSystems</title>
-<meta name="description" content="BooleSystems — coming soon...">
+<title>BooleOS</title>
+<meta name="description" content="BooleOS — a bare-metal x86 hobby OS, built from scratch in C99 and NASM, developed entirely through Claude Code.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="BooleOS">
+<meta property="og:description" content="A bare-metal x86 hobby OS, built from scratch in C99 and NASM. Developed entirely through Claude Code.">
+<meta property="og:image" content="https://boolesystems.github.io/assets/social-preview.png">
+<meta property="og:url" content="https://boolesystems.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BooleOS">
+<meta name="twitter:description" content="A bare-metal x86 hobby OS, built from scratch in C99 and NASM. Developed entirely through Claude Code.">
+<meta name="twitter:image" content="https://boolesystems.github.io/assets/social-preview.png">
+
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -12,41 +23,150 @@
 
   body {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px 16px;
     color: #c9d1d9;
     font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
     background-color: #0d1117;
-    background-image:
-      radial-gradient(ellipse 60% 50% at 25% 30%, rgba(88, 166, 255, 0.28), transparent 70%),
-      radial-gradient(ellipse 60% 50% at 75% 70%, rgba(163, 113, 247, 0.26), transparent 70%);
-    background-attachment: fixed;
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.02),
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    line-height: 1.6;
+    padding: 24px 16px 48px;
   }
 
-  main {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    border: 1px solid rgba(88, 166, 255, 0.25);
+    border-radius: 10px;
+    padding: 32px 24px;
+    background: rgba(13, 17, 23, 0.6);
+    box-shadow: 0 0 40px rgba(88, 166, 255, 0.06);
+  }
+
+  header {
     text-align: center;
+    margin-bottom: 40px;
   }
 
   h1 {
+    font-size: clamp(2rem, 9vw, 3.25rem);
     font-weight: 700;
-    font-size: clamp(1.75rem, 8vw, 4.5rem);
     letter-spacing: -0.02em;
     color: #e6edf3;
     text-shadow: 0 0 24px rgba(88, 166, 255, 0.45);
-    overflow-wrap: anywhere;
+  }
+
+  .tagline {
+    margin-top: 10px;
+    color: #8b949e;
+    font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+  }
+
+  .version {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 0.8rem;
+    color: #7ee787;
+    border: 1px solid rgba(126, 231, 135, 0.3);
+    border-radius: 6px;
+    padding: 3px 10px;
+  }
+
+  section {
+    margin-bottom: 36px;
+  }
+
+  h2 {
+    font-size: 1rem;
+    color: #58a6ff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+    border-bottom: 1px solid rgba(88, 166, 255, 0.2);
+    padding-bottom: 6px;
+  }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  .accent { color: #7ee787; }
+
+  code {
+    background: rgba(110, 118, 129, 0.15);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.9em;
+    color: #e6edf3;
+  }
+
+  .status-list {
+    list-style: none;
+  }
+
+  .status-list li {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(139, 148, 158, 0.15);
+  }
+
+  .status-list li:last-child { border-bottom: none; }
+
+  .status-list .mark {
+    color: #7ee787;
+    flex-shrink: 0;
+  }
+
+  .links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    display: block;
+    border: 1px solid rgba(88, 166, 255, 0.25);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #e6edf3;
+    background: rgba(88, 166, 255, 0.04);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .card:hover, .card:focus {
+    border-color: rgba(88, 166, 255, 0.6);
+    background: rgba(88, 166, 255, 0.09);
+  }
+
+  .card .label {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .card .sub {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.78rem;
+    color: #8b949e;
   }
 
   footer {
-    font-size: 0.8rem;
-    color: #8b949e;
+    margin-top: 8px;
     text-align: center;
+    font-size: 0.8rem;
+    color: #6e7681;
   }
 
   footer a {
@@ -55,15 +175,73 @@
   }
 
   footer a:hover, footer a:focus { text-decoration: underline; }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 24px 16px; }
+  }
+
+  .bg-glow {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(ellipse 700px 500px at 20% 15%, rgba(88, 166, 255, 0.08), transparent 60%),
+      radial-gradient(ellipse 600px 500px at 85% 90%, rgba(163, 113, 247, 0.06), transparent 60%);
+    background-repeat: no-repeat;
+  }
 </style>
 </head>
 <body>
-  <main>
-    <h1>coming soon...</h1>
-  </main>
-  <footer>
-    BooleSystems &middot;
-    <a href="https://github.com/BooleSystems/BooleOS">github.com/BooleSystems/BooleOS</a>
-  </footer>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="wrap">
+    <header>
+      <h1>BooleOS</h1>
+      <p class="tagline">A bare-metal x86 hobby OS, built from scratch in C99 and NASM.</p>
+      <span class="version">v0.20.1 &middot; pre-1.0, active development</span>
+    </header>
+
+    <section>
+      <h2>What it is</h2>
+      <p>BooleOS is an experimental x86 (32-bit) operating system written from scratch in C99 and NASM assembly — no Linux or BSD underneath, no libc. It boots via GRUB (Multiboot2), runs kernel and user processes with real memory isolation, handles syscalls from ring 3, and has its own filesystem and driver stack.</p>
+      <p>It's developed entirely through <span class="accent">Claude Code</span>: every line of the implementation is AI-generated, commit by commit. The maintainer directs the project, reviews every diff, and decides what comes next, but doesn't hand-write the code. This isn't a hidden detail — it's the project's premise, and it's enforced in <a href="https://github.com/BooleSystems/BooleOS/blob/main/CONTRIBUTING.md" style="color:#58a6ff">CONTRIBUTING.md</a>: contributions must be AI-generated too, with a verifiable co-authorship trailer.</p>
+      <p>Still pre-1.0, still changing fast.</p>
+    </section>
+
+    <section>
+      <h2>Status</h2>
+      <ul class="status-list">
+        <li><span class="mark">✓</span> Multiboot2 boot, GDT/IDT/PIC/PIT, PS/2 keyboard</li>
+        <li><span class="mark">✓</span> Physical/virtual memory manager, kernel heap</li>
+        <li><span class="mark">✓</span> Cooperative round-robin scheduler, preemption, <code>fork()</code></li>
+        <li><span class="mark">✓</span> Ring 3 usermode, syscalls via <code>int 0x80</code>, ELF32 loader</li>
+        <li><span class="mark">✓</span> Interactive userland shell (pipes, redirects, job control)</li>
+        <li><span class="mark">✓</span> ATA PIO driver, FAT16 read/write, VFS, PCI enumeration</li>
+        <li><span class="mark">✓</span> Hardware abstraction layer, Safe Mode, crash handler</li>
+        <li><span class="mark">✓</span> SDK for writing and running your own programs</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Links</h2>
+      <div class="links">
+        <a class="card" href="https://github.com/BooleSystems/BooleOS">
+          <span class="label">GitHub</span>
+          <span class="sub">Source code</span>
+        </a>
+        <a class="card" href="https://github.com/BooleSystems/BooleOS/releases">
+          <span class="label">Releases</span>
+          <span class="sub">Bootable ISOs</span>
+        </a>
+        <a class="card" href="https://dev.to/shannondev/booleos-building-a-bare-metal-x86-os-without-writing-a-single-line-of-it-myself-11g">
+          <span class="label">Devlog</span>
+          <span class="sub">dev.to/shannondev</span>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      BooleSystems &middot; <a href="https://github.com/BooleSystems/BooleOS">github.com/BooleSystems/BooleOS</a> &middot; MIT licensed
+    </footer>
+  </div>
 </body>
 </html>

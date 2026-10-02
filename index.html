@@ -197,7 +197,7 @@
     <header>
       <h1>BooleOS</h1>
       <p class="tagline">A bare-metal x86 hobby OS, built from scratch in C99 and NASM.</p>
-      <span class="version">v0.20.1 &middot; pre-1.0, active development</span>
+      <span class="version" id="version-badge">v0.22.1 &middot; pre-1.0, active development</span>
     </header>
 
     <section>
@@ -212,10 +212,11 @@
       <ul class="status-list">
         <li><span class="mark">✓</span> Multiboot2 boot, GDT/IDT/PIC/PIT, PS/2 keyboard</li>
         <li><span class="mark">✓</span> Physical/virtual memory manager, kernel heap</li>
-        <li><span class="mark">✓</span> Cooperative round-robin scheduler, preemption, <code>fork()</code></li>
+        <li><span class="mark">✓</span> Cooperative round-robin scheduler, preemption, copy-on-write <code>fork()</code></li>
         <li><span class="mark">✓</span> Ring 3 usermode, syscalls via <code>int 0x80</code>, ELF32 loader</li>
         <li><span class="mark">✓</span> Interactive userland shell (pipes, redirects, job control)</li>
         <li><span class="mark">✓</span> ATA PIO driver, FAT16 read/write, VFS, PCI enumeration</li>
+        <li><span class="mark">✓</span> File and directory removal (<code>unlink()</code>, <code>rmdir()</code>)</li>
         <li><span class="mark">✓</span> Hardware abstraction layer, Safe Mode, crash handler</li>
         <li><span class="mark">✓</span> SDK for writing and running your own programs</li>
       </ul>
@@ -243,5 +244,33 @@
       BooleSystems &middot; <a href="https://github.com/BooleSystems/BooleOS">github.com/BooleSystems/BooleOS</a> &middot; MIT licensed
     </footer>
   </div>
+  <script>
+  (function () {
+    var badge = document.getElementById('version-badge');
+    if (!badge || !window.fetch) return;
+    var KEY = 'booleos-latest-tag';
+    var TTL = 10 * 60 * 1000;
+    var SUFFIX = ' \u00b7 pre-1.0, active development';
+
+    function show(tag) {
+      if (/^v\d+\.\d+\.\d+[\w.-]*$/.test(tag)) badge.textContent = tag + SUFFIX;
+    }
+
+    try {
+      var cached = JSON.parse(sessionStorage.getItem(KEY));
+      if (cached && Date.now() - cached.t < TTL) { show(cached.tag); return; }
+    } catch (e) {}
+
+    fetch('https://api.github.com/repos/BooleSystems/BooleOS/releases/latest', {
+      headers: { 'Accept': 'application/vnd.github+json' }
+    })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (data) {
+        show(data.tag_name);
+        try { sessionStorage.setItem(KEY, JSON.stringify({ tag: data.tag_name, t: Date.now() })); } catch (e) {}
+      })
+      .catch(function () {});
+  })();
+  </script>
 </body>
 </html>
